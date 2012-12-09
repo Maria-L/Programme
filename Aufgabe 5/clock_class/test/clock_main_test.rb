@@ -25,11 +25,28 @@ require 'clock_main'
 class ClockMainTest < Test::Unit::TestCase
   def test_clock_main
     
+    #### ClockSec ####
     
-    ##### to_clock_sec #####
+     ##### to_clock_sec #####
     
     assert_equal(ClockSec[0], ClockSec[0].to_clock_sec())
-    assert_equal(ClockSec[0], Clock12[:AM,0,0,0].to_clock_sec())
+ 
+    
+    #### Clock12 ####
+    
+     ##### to_clock_sec #####
+    
+    assert_equal(ClockSec[0],Clock12[:AM,0,0,0].to_clock_sec())
+    assert_equal(ClockSec[0],Clock12[:AM,0,0,0].to_clock_sec())
+    assert_equal(ClockSec[3723],Clock12[:AM,1,2,3].to_clock_sec())
+    assert_equal(ClockSec[43200],Clock12[:PM,0,0,0].to_clock_sec())
+    assert_equal(ClockSec[46923],Clock12[:PM,1,2,3].to_clock_sec())
+    
+
+    #### Clock24 ####
+
+    ##### to_clock_sec #####
+    
     assert_equal(ClockSec[0], Clock24[0,0,0].to_clock_sec())
     
     ##### to_clock24 #####

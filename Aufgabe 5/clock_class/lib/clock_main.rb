@@ -16,6 +16,15 @@ require_relative'clock12'
 require_relative'praedicats'
 
 
+#def_class(:MyClass,[:myVar])
+
+#puts MyClass[8]
+
+#p MyClass[9]
+
+puts ClockSec[2334] == ClockSec[2335]
+#puts Clock24[12,25,12] == Clock24[1,25,40]
+#p Clock12.new(:PM,4,52,32).add(Clock12.new(:PM,4,52,32))
 #Test{
 #     (Clock24[12,34,2],Clock12[:AM, 9,6,8]) => Clock24[21,40,10],
 #     (Clock24[12,34,2],ClockSec[3600]) => Clock24[13,34,2],

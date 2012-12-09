@@ -1,16 +1,45 @@
-def_class(:ClockSec,[:day_sec]){
+class ClockSec
   
-  def invariant?()
-    day_sec.day_sec?
+          ####CREATION####
+
+  #A Funktion to makes the creation of a Class easyer by using the phrase ClassName[Atributes]
+
+  def self.[](*args)
+    check_inv(self.new(*args))
+  end
+
+  #A funktion which use the attributes from the class own funktion new. to create a new object
+
+  def initialize(day_sec)
+    @day_sec = day_sec
   end
   
+  def invariant?
+    self.day_sec.day_sec?
+  end
+  
+          ####Praedicats####
   def clock?
     true
+  end
+  
+  def clock_sec?
+    true
+  end
+  
+          ####GET/TRANSFORMATIONS####
+  def day_sec
+    @day_sec
+  end
+  
+  def to_s
+    "#{self.class.name}[#{@day_sec}]"
   end
   
   def to_clock_sec
     ClockSec[self.day_sec]
   end
+  
   
   #Conversts a ClockSec to a Clock12
   #
@@ -66,6 +95,7 @@ def_class(:ClockSec,[:day_sec]){
     (self.to_clock12).halve
   end
   
+          ####METHODS####
   
   #Adds two differrent second clocks
   #
@@ -100,9 +130,21 @@ def_class(:ClockSec,[:day_sec]){
     ClockSec[(self.day_sec - (clock.to_clock_sec).day_sec) % $DAY_IN_SEC]
   end
 
+  #Calculate the succesor of a ClockSec
+  #
+  #succ
+  #
+  #Test{ClockSec[3600].succ => ClockSec[3601]}
+
   def succ
-    self.add(ClockSec[1]) 
+    self.add(ClockSec[1])
   end
+
+  #Calculate the predeccesor of a ClockSec
+  #
+  #succ
+  #
+  #Test{ClockSec[500].succ => ClockSec[501]}
 
   def pred
     sub(ClockSec[1])
@@ -110,6 +152,8 @@ def_class(:ClockSec,[:day_sec]){
 
   def clock_equal(clock)
     check_pre(clock.clock?)
-    self == (clock.to_clock_sec)
+    self.day_sec == (clock.to_clock_sec).day_sec
   end
-}
+  
+  alias_method :==, :clock_equal
+end
