@@ -24,43 +24,29 @@ require 'clock_main'
 
 class ClockMainTest < Test::Unit::TestCase
   def test_clock_main
-    
-    #### ClockSec ####
-    
-     ##### to_clock_sec #####
-    
-    assert_equal(ClockSec[0], ClockSec[0].to_clock_sec())
- 
-    
-    #### Clock12 ####
-    
-     ##### to_clock_sec #####
-    
-    assert_equal(ClockSec[0],Clock12[:AM,0,0,0].to_clock_sec())
-    assert_equal(ClockSec[0],Clock12[:AM,0,0,0].to_clock_sec())
-    assert_equal(ClockSec[3723],Clock12[:AM,1,2,3].to_clock_sec())
-    assert_equal(ClockSec[43200],Clock12[:PM,0,0,0].to_clock_sec())
-    assert_equal(ClockSec[46923],Clock12[:PM,1,2,3].to_clock_sec())
-    
 
-    #### Clock24 ####
+    ##### Transformationen #####
 
     ##### to_clock_sec #####
     
-    assert_equal(ClockSec[0], Clock24[0,0,0].to_clock_sec())
+    assert_equal(ClockSec[0],Clock24[0,0,0].to_clock_sec())
+    assert_equal(ClockSec[0],Clock12[:AM,0,0,0].to_clock_sec())
+    assert_equal(ClockSec[46923],Clock12[:PM,1,2,3].to_clock_sec())
     
     ##### to_clock24 #####
     
-    assert_equal(Clock24[0,0,0], ClockSec[0].to_clock24())
-    assert_equal(Clock24[0,0,0], Clock12[:AM,0,0,0].to_clock24())
-    assert_equal(Clock24[0,0,0], Clock24[0,0,0].to_clock24())
+    assert_equal(Clock24[0,0,0],ClockSec[0].to_clock24())
+    assert_equal(Clock24[0,0,0],Clock12[:AM,0,0,0].to_clock24())
+    assert_equal(Clock24[0,0,0],Clock24[0,0,0].to_clock24())
     
     ##### to_clock12 #####
     
-    assert_equal(Clock12[:AM,0,0,0], ClockSec[0].to_clock12())
-    assert_equal(Clock12[:AM,0,0,0], Clock12[:AM,0,0,0].to_clock12())
-    assert_equal(Clock12[:AM,0,0,0], Clock24[0,0,0].to_clock12())
+    assert_equal(Clock12[:AM,0,0,0],ClockSec[0].to_clock12())
+    assert_equal(Clock12[:AM,0,0,0],Clock12[:AM,0,0,0].to_clock12())
+    assert_equal(Clock12[:AM,0,0,0],Clock24[0,0,0].to_clock12())
 
+    
+    ##### Methoden auf Clocks #####
     
     ##### clock_succ #####
     
@@ -83,41 +69,6 @@ class ClockMainTest < Test::Unit::TestCase
     assert_equal(Clock12[:PM,11,59,59],Clock12[:AM,0,0,0].pred())
     assert_equal(ClockSec[86399],ClockSec[0].pred())
     
-    ##### clock_hour24 #####
-    
-    assert_equal(1,Clock24[1,2,3].hour24())
-    assert_equal(1,Clock12[:AM,1,2,3].hour24())
-    assert_equal(1,ClockSec[3723].hour24())
-    
-    ##### clock_hour12 #####
-    
-    assert_equal(1,Clock24[1,2,3].hour12())
-    assert_equal(1,Clock12[:AM,1,2,3].hour12())
-    assert_equal(1,ClockSec[3723].hour12())
-
-    ##### clock_halve #####
-    
-    assert_equal(:AM,Clock24[1,2,3].halve())
-    assert_equal(:AM,Clock12[:AM,1,2,3].halve())
-    assert_equal(:AM,ClockSec[3723].halve())
-
-    ##### clock_min #####
-    
-    assert_equal(2,Clock24[1,2,3].min())
-    assert_equal(2,Clock12[:AM,1,2,3].min())
-    assert_equal(2,ClockSec[3723].min())
-    
-    ##### clock_sec #####
-    
-    assert_equal(3,Clock24[1,2,3].sec())
-    assert_equal(3,Clock12[:AM,1,2,3].sec())
-    assert_equal(3,ClockSec[3723].sec())
-
-    ##### clock_day_sec #####
-    
-    assert_equal(3723,Clock24[1,2,3].day_sec())
-    assert_equal(3723,Clock12[:AM,1,2,3].day_sec())
-    assert_equal(3723,ClockSec[3723].day_sec())
     
     ##### clock_add #####
     
@@ -150,5 +101,75 @@ class ClockMainTest < Test::Unit::TestCase
     assert_raise(RuntimeError) {
       Clock12[:AM,1,2,3].sub('a')
     }
+    
+    ##### clock_equal ####
+    
+    assert_equal(true,Clock12[:AM,0,0,0].clock_equal(Clock12[:AM,0,0,0]))
+    assert_equal(true,Clock12[:AM,0,0,0].clock_equal(Clock24[0,0,0]))
+    assert_equal(true,Clock12[:AM,0,0,0].clock_equal(ClockSec[0]))
+    assert_equal(false,Clock12[:AM,0,0,0].clock_equal(Clock12[:AM,0,0,1]))
+    assert_equal(false,Clock12[:AM,0,0,0].clock_equal(ClockSec[1]))
+    assert_equal(false,Clock12[:AM,0,0,0].clock_equal(Clock24[0,0,1]))
+    assert_equal(false,Clock12[:AM,0,0,0].clock_equal('a'))
+    assert_equal(true,ClockSec[0].clock_equal(Clock12[:AM,0,0,0]))
+    assert_equal(true,ClockSec[0].clock_equal(Clock24[0,0,0]))
+    assert_equal(true,ClockSec[0].clock_equal(ClockSec[0]))
+    assert_equal(false,ClockSec[0].clock_equal(Clock12[:AM,0,0,1]))
+    assert_equal(false,ClockSec[0].clock_equal(ClockSec[1]))
+    assert_equal(false,ClockSec[0].clock_equal(Clock24[0,0,1]))
+    assert_equal(false,ClockSec[0].clock_equal('a'))
+    assert_equal(true,Clock24[0,0,0].clock_equal(Clock12[:AM,0,0,0]))
+    assert_equal(true,Clock24[0,0,0].clock_equal(Clock24[0,0,0]))
+    assert_equal(true,Clock24[0,0,0].clock_equal(ClockSec[0]))
+    assert_equal(false,Clock24[0,0,0].clock_equal(Clock12[:AM,0,0,1]))
+    assert_equal(false,Clock24[0,0,0].clock_equal(ClockSec[1]))
+    assert_equal(false,Clock24[0,0,0].clock_equal(Clock24[0,0,1]))
+    assert_equal(false,Clock24[0,0,0].clock_equal('a'))
+    
+    
+    ##### Get-Methoden #####
+    
+    ##### hour24 #####
+    
+    assert_equal(1,Clock24[1,2,3].hour24())
+    assert_equal(1,Clock12[:AM,1,2,3].hour24())
+    assert_equal(1,ClockSec[3723].hour24())
+    
+    ##### hour12 #####
+    
+    assert_equal(1,Clock24[1,2,3].hour12())
+    assert_equal(1,Clock12[:AM,1,2,3].hour12())
+    assert_equal(1,ClockSec[3723].hour12())
+
+    ##### halve #####
+    
+    assert_equal(:AM,Clock24[1,2,3].halve())
+    assert_equal(:AM,Clock12[:AM,1,2,3].halve())
+    assert_equal(:AM,ClockSec[3723].halve())
+
+    ##### min #####
+    
+    assert_equal(2,Clock24[1,2,3].min())
+    assert_equal(2,Clock12[:AM,1,2,3].min())
+    assert_equal(2,ClockSec[3723].min())
+    
+    ##### sec #####
+    
+    assert_equal(3,Clock24[1,2,3].sec())
+    assert_equal(3,Clock12[:AM,1,2,3].sec())
+    assert_equal(3,ClockSec[3723].sec())
+
+    ##### day_sec #####
+    
+    assert_equal(3723,Clock24[1,2,3].day_sec())
+    assert_equal(3723,Clock12[:AM,1,2,3].day_sec())
+    assert_equal(3723,ClockSec[3723].day_sec())
+    
+    
+    ##### to_s Methoden #####
+    
+    assert_equal("ClockSec[5]",ClockSec[5].to_s)
+    assert_equal("Clock12[AM,1,2,3]",Clock12[:AM,1,2,3].to_s)
+    assert_equal("Clock24[1,2,3]",Clock24[1,2,3].to_s)
   end
 end

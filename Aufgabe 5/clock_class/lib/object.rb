@@ -16,7 +16,7 @@ class Object
   end
   
   def day_sec?
-    self.nat? and self < $DAY_IN_SEC
+    false
   end
   
   def hour24?
@@ -40,7 +40,7 @@ class Object
   end
 end
 
-class Int
+class Integer
   #To check the legality of the insert Numbers
   #obj < $DAY_IN_SEC and obj >= 0
   #day_sec? ::== (obj) :: 

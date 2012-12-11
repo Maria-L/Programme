@@ -1,41 +1,36 @@
-class ClockSec
+class ClockSec < Clock
   
-          ####CREATION####
+  ####CREATION####
 
-  #A Funktion to makes the creation of a Class easyer by using the phrase ClassName[Atributes]
 
-  def self.[](*args)
-    check_inv(self.new(*args))
-  end
-
-  #A funktion which use the attributes from the class own funktion new. to create a new object
+  #A funktion which uses the attributes from the class own funktion new to create a new object
 
   def initialize(day_sec)
     @day_sec = day_sec
   end
   
+  #Checking the invariants
+  
   def invariant?
-    self.day_sec.day_sec?
+    day_sec.day_sec?
   end
   
-          ####Praedicats####
-  def clock?
-    true
-  end
+  ####PRAEDICATS####
   
+  #Hookmethod for the praedicat clock_sec?
   def clock_sec?
     true
   end
   
-          ####GET/TRANSFORMATIONS####
-  def day_sec
-    @day_sec
-  end
+  ####GET/TRANSFORMATIONS####
   
+  # Method to transform the Class in a pretty string
+  # Test {ClockSec[5].to_s => "ClockSec[5]"}
   def to_s
     "#{self.class.name}[#{@day_sec}]"
   end
   
+  #Transforms to a ClockSec
   def to_clock_sec
     ClockSec[self.day_sec]
   end
@@ -59,6 +54,8 @@ class ClockSec
     else               Clock12[:AM, hour, min, sec]
     end
   end
+  
+  
   #Converts a ClockSec to a Clock24
   #
   #clock_sec_to_clock24 ::= (clock) ::
@@ -74,86 +71,10 @@ class ClockSec
     
     Clock24[hour, min, sec]
   end
-
-  def hour24
-    (self.to_clock24).hour24
-  end
   
-  def hour12
-    (self.to_clock12).hour12
+  # Getter for day_sec
+  # Test {ClockSec[5].day_sec => 5}
+  def day_sec
+    @day_sec
   end
-  
-  def min
-    (self.to_clock24).min
-  end
-  
-  def sec
-    (self.to_clock24).sec
-  end
-  
-  def halve
-    (self.to_clock12).halve
-  end
-  
-          ####METHODS####
-  
-  #Adds two differrent second clocks
-  #
-  #ClockSec#add ::= (clock) ::
-  #ClockSec x ClockSec -> ClockSec
-  #Test{ ClockSec[0].add(ClockSec[400]) => ClockSec[400],
-  #ClockSec[400].add(ClockSec[0]) => ClockSec[400],
-  #ClockSec[400].add(ClockSec[300]) => ClockSec[700]
-  #ClockSec[86399].add(ClockSec[8400]) => ClockSec[8399]
-  #ClockSec[400].add('a') => ERR, (ClockSec[400],5) => ERR}
-
-  def add (clock)
-    check_pre(clock.clock?)
-    ClockSec[(self.day_sec + (clock.to_clock_sec).day_sec) % $DAY_IN_SEC]
-  end
-
-  #Substidude two differrent second clocks
-  #
-  #clock_sec_sub ::= (clock1, clock2) ::
-  #ClockSec x ClockSec -> ClockSec ::::
-
-  #
-  #Test{ (ClockSec[400],ClockSec[400]) => ClockSec[0],
-  #(ClockSec[400],ClockSec[0]) => ClockSec[400],
-  #(ClockSec[400],ClockSec[300]) => ClockSec[100],
-  #(ClockSec[0],ClockSec[1]) => ClockSec[86399],
-  #
-  #(Clock24[1,2,3], ClockSec[400]) => Err}
-
-  def sub (clock)
-    check_pre(clock.clock?)
-    ClockSec[(self.day_sec - (clock.to_clock_sec).day_sec) % $DAY_IN_SEC]
-  end
-
-  #Calculate the succesor of a ClockSec
-  #
-  #succ
-  #
-  #Test{ClockSec[3600].succ => ClockSec[3601]}
-
-  def succ
-    self.add(ClockSec[1])
-  end
-
-  #Calculate the predeccesor of a ClockSec
-  #
-  #succ
-  #
-  #Test{ClockSec[500].succ => ClockSec[501]}
-
-  def pred
-    sub(ClockSec[1])
-  end
-
-  def clock_equal(clock)
-    check_pre(clock.clock?)
-    self.day_sec == (clock.to_clock_sec).day_sec
-  end
-  
-  alias_method :==, :clock_equal
 end

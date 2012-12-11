@@ -10,6 +10,7 @@ $DAY_IN_SEC = $DAY_IN_HOUR * $HOUR_IN_SEC
 require_relative'../Extensions/ext_pr1_v4'
 require_relative'../Extensions/ext_classes_v1'
 require_relative'object'
+require_relative'clock'
 require_relative'clock_sec'
 require_relative'clock24'
 require_relative'clock12'
@@ -22,7 +23,7 @@ require_relative'praedicats'
 
 #p MyClass[9]
 
-puts ClockSec[2334] == ClockSec[2335]
+#puts ClockSec[2334] == ClockSec[2335]
 #puts Clock24[12,25,12] == Clock24[1,25,40]
 #p Clock12.new(:PM,4,52,32).add(Clock12.new(:PM,4,52,32))
 #Test{
@@ -37,42 +38,3 @@ puts ClockSec[2334] == ClockSec[2335]
 #     (ClockSec[3600],ClockSec[400]) => ClockSec[4000] 
 #     (100, Clock12[:AM,1,2,3]) => Err, (Clock24[1,2,3], 100) => Err}
 #
-
-#def clock_add (clock1,clock2)
-#  check_pre(clock?(clock1) && clock?(clock2))
-#  
-#  to_clock(clock_sec_add(to_clock_sec(clock1), to_clock_sec(clock2)), clock1)
-#end
-#
-##Subtracts two random clocks
-##
-##clock_sub ::== (clock1, clock2) ::
-##Clock x Clock -> Clock ::
-##   (Clock24 x Clock -> Clock24 |
-##    Clock12 x Clock -> Clock12 |
-##    ClockSec x Clock -> ClockSec)
-##
-##Test{
-##     (Clock24[0,1,40],Clock12[:AM,0,1,40]) => Clock24[0,0,0],
-##     (Clock24[0,1,40],ClockSec[100]) => Clock24[0,0,0],
-##     (Clock24[0,1,40],Clock24[0,1,40]) => Clock24[0,0,0]
-##     (Clock12[:AM,0,1,40],ClockSec[100]) => Clock12[:AM,0,0,0],
-##     (Clock12[:AM,0,1,40],Clock24[0,1,40]) => Clock12[:AM,0,0,0],
-##     (Clock12[:AM,0,1,40],Clock12[:AM,0,1,40]) => Clock12[:AM,0,0,0],
-##     (ClockSec[100],Clock12[:AM,0,1,40]) => ClockSec[0],
-##     (ClockSec[100],Clock24[0,1,40]) => ClockSec[0],
-##     (ClockSec[100],ClockSec[100]) => ClockSec[0],
-##     (100, Clock12[:AM,1,2,3]) => Err, (Clock24[1,2,3], 100) => Err}
-#
-#def clock_sub (clock1, clock2)
-#  check_pre(clock?(clock1) && clock?(clock2))
-#  
-#  to_clock(clock_sec_sub(to_clock_sec(clock1), to_clock_sec(clock2)), clock1)
-#end
-#
-#
-#def clock_equal (clock1, clock2)
-#  check_pre(clock?(clock1) && clock?(clock2))
-#  
-#  clock_day_sec(clock1) == clock_day_sec(clock2)
-#end

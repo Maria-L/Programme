@@ -160,7 +160,7 @@ class ClockSec
 
   #Calculate the predeccesor of a ClockSec
   #
-  #succ
+  #pred
   #
   #Test{ClockSec[500].succ => ClockSec[501]}
 
