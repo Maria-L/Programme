@@ -1,9 +1,13 @@
 #Union1d ::= Shape1d x Shape1d
-class Union1d < Shape
+class Union1d
   
   ####CREATION#####
   attr_reader :left, :right
-
+  
+  def self.[](*args)
+    check_inv(self.new(*args))
+  end
+  
   def initialize(left, right)
     @left = left
     @right = right
@@ -16,7 +20,9 @@ class Union1d < Shape
   ####PRAEDICATS####
    def union1d?; true end
    def shape1d?; true end
+   def shape?; true end 
    def compshape?; true end
+   def graphobj?; true end
    def one_dimension?; true end
    
    ####METHODS####
@@ -33,7 +39,7 @@ class Union1d < Shape
   #
   
   def translate(point)
-    check_pre(point.int?)
+    check_pre(point.point? && self.equal_dimension?(point))
     Union1d[(self.left).translate(point),(self.right).translate(point)]
   end
   
@@ -60,7 +66,7 @@ class Union1d < Shape
   #assert_equal(true, Union1d[Range1d[0,0],Range1d[0,0]].in?(0))
   #
   def in?(point)
-    check_pre(point.int?)
+    check_pre(point.point?)
     (self.left).in?(point) or (self.right).in?(point)
   end
   
@@ -68,24 +74,19 @@ class Union1d < Shape
     o.union1d? && (self.left).graph_equal?(o.left) && (self.right).graph_equal?(o.right)
   end
   
-  #alias_method :==, :graph_equal?
-
+  alias_method :==, :graph_equal?
+  
+  def graph_equal_trans?(o)
+    o.graphobj? &&
+      self.translate(self.lower_left).graph_equal?(o.translate(o.lower_left))
+  end
+  
   def lower_left
     (-(self.bounds).first)
   end
   
    def to_s
     "#{self.class.name} [#{left.to_s},#{right.to_s}]"
-  end
-  
-  def +(obj)
-    check_pre(obj.shape1d?)
-    Union1d[self,obj]
-  end
-  
-  def -(obj)
-    check_pre(obj.shape1d?)
-    Diff2d[self,obj]
   end
 end
 

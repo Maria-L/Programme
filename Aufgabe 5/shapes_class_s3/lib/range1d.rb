@@ -1,15 +1,10 @@
 
 #Range1d ::= Int x Int
-class Range1d
-  
+class Range1d < Shape
   
   ####CREATION#####
   
-  attr_reader :first, :last
-  
-  def self.[](*args)
-    check_inv(self.new(*args))
-  end
+  attr_reader :first, :last  
   
   def initialize(first, last)
     @first = first
@@ -17,20 +12,18 @@ class Range1d
   end
   
   def invariant?
-    ((@first).int? && (@last).int?)
+    ((first).int? && (last).int? && first <= last)
   end
   
   ####PRAEDICATS####
-   def range1d?; true end
-   def shape1d?; true end
-   def shape?; true end
-   def primshape?; true end
-   def graphobj?; true end
-   def one_dimension?; true end
+  def range1d?; true end
+  def shape1d?; true end
+  def primshape?; true end
+  def one_dimension?; true end
    
    
    
-   ####METHODS####
+  ####METHODS####
   
   #translate_shape ::= (shape, point) :: Shape x Int -> Shape
   #                                      Shape x Point2d -> Shape
@@ -44,7 +37,7 @@ class Range1d
   #
     
   def translate(point)
-    check_pre(point.point? && self.equal_dimension?(point))
+    check_pre(point.int?)
     Range1d[self.first + point, self.last + point]
   end
   
@@ -64,7 +57,7 @@ class Range1d
   #assert_equal(false, Range1d[2,3].in?(1))
   #assert_equal(true, Range1d[0,0].in?(0))
   def in?(point)
-    check_pre(point.point?)
+    check_pre(point.int?)
     (self.first..self.last).include?(point)
   end
   
@@ -72,12 +65,7 @@ class Range1d
     o.range1d? && (self.first == o.first) && (self.last == o.last)
   end
   
-  alias_method :==, :graph_equal?
-  
-  def graph_equal_trans?(o)
-    o.graphobj? &&
-      self.translate(self.lower_left).graph_equal?(o.translate(o.lower_left))
-  end
+  #alias_method :==, :graph_equal?
   
   def lower_left
     -(self.first)
@@ -85,5 +73,15 @@ class Range1d
  
   def to_s
     "#{self.class.name} [#{first},#{last}]"
+  end
+  
+  def + (obj)
+    check_pre(obj.shape1d?)
+    Union1d[self,obj]
+  end
+  
+  def -(obj)
+    check_pre(obj.shape1d?)
+    Diff2d[self,obj]
   end
 end

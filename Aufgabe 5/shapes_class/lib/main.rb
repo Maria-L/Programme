@@ -2,16 +2,12 @@ $LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../..','Extensions')
 
 require_relative'../Extensions/ext_pr1_v4'
 require_relative'../Extensions/ext_classes_v1'
-require_relative'graphobj'
-require_relative'shape'
-require_relative'point'
 require_relative'praedicats'
 require_relative'range1d'
 require_relative'range2d'
 require_relative'union1d'
 require_relative'union2d'
 require_relative'point2d'
-
 
 puts Range1d[5,6]
 puts Range2d[Range1d[1,5],Range1d[1,3]]

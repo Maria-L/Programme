@@ -3,11 +3,7 @@ class Union2d < Shape
   
   ####CREATION#####
   attr_reader :left, :right
-  
-  def self.[](*args)
-    check_inv(self.new(*args))
-  end
-  
+  :private
   def initialize(left, right)
     @left = left
     @right = right
@@ -20,11 +16,9 @@ class Union2d < Shape
   ####PRAEDICATS####
   def union2d?; true end
   def shape2d?; true end
-  def shape?; true end
   def unionshape?; true end
   def compshape?; true end
   def unionshape?; true end
-  def graphobj?; true end
   def two_dimensions?; true end
   
   ####METHODS####
@@ -76,12 +70,7 @@ class Union2d < Shape
     o.union2d? && (self.left).graph_equal?(o.left) && (self.right).graph_equal?(o.right)
   end
   
-  alias_method :==, :graph_equal?
-  
-  def graph_equal_trans?(o)
-    o.graphobj? &&
-      self.translate(self.lower_left).graph_equal?(o.translate(o.lower_left))
-  end
+  #alias_method :==, :graph_equal?
   
   def lower_left
     Point2d[-((self.bounds).x_range.first), -((self.bounds).y_range.first)]
@@ -89,5 +78,15 @@ class Union2d < Shape
   
   def to_s
     "#{self.class.name} [#{left.to_s},#{right.to_s}]"
+  end
+  
+  def +(obj)
+    check_pre(obj.shape2d?)
+    Union2d[self,obj]
+  end
+  
+  def -(obj)
+    check_pre(obj.shape2d?)
+    Diff2d[self,obj]
   end
 end

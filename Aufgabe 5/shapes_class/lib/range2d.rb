@@ -1,10 +1,14 @@
 #Range2d ::= Range1d x Range1d
-class Range2d < Shape
+class Range2d
   
   
   ####CREATION#####
   attr_reader :x_range, :y_range
- 
+  
+  def self.[](*args)
+    check_inv(self.new(*args))
+  end
+  
   def initialize(x_range, y_range)
     @x_range = x_range
     @y_range = y_range
@@ -17,6 +21,7 @@ class Range2d < Shape
   ####PRAEDICATS####
   def range2d?; true end 
   def shape2d?; true end
+  def shape?; true end
   def primshape?; true end
   def two_dimensions?; true end
   
@@ -65,7 +70,12 @@ class Range2d < Shape
     o.range2d? && (self.x_range).graph_equal?(o.x_range) && (self.y_range).graph_equal?(o.y_range)
   end
   
-  #alias_method :==, :graph_equal?
+  alias_method :==, :graph_equal?
+  
+  def graph_equal_trans?(o)
+    o.graphobj? &&
+      self.translate(self.lower_left).graph_equal?(o.translate(o.lower_left))
+  end
   
   def lower_left
     Point2d[-((self.bounds).x_range.first), -((self.bounds).y_range.first)]
@@ -73,15 +83,5 @@ class Range2d < Shape
   
    def to_s
     "#{self.class.name} [#{x_range.to_s},#{y_range.to_s}]"
-  end
-  
-  def +(obj)
-    check_pre(obj.range2d?)
-    Union2d[self,obj]
-  end
-  
-   def -(obj)
-    check_pre(obj.shape2d?)
-    Diff2d[self,obj]
   end
 end

@@ -43,9 +43,4 @@ end
 class Integer
   #point? ::= (x) :: Any -> Bool
   def point?; true end
-  def one_dimension?; true end
-end
-
-class Fixnum
-  def one_dimension?; true end
 end
