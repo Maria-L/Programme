@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../..','Extensions')
 
 require'test/unit'
-require_relative '../../Extensions/ext_pr1_v4'
+require_relative '../Extensions/ext_pr1_v4'
 
 ##### Einfachrekursion #####
 
@@ -11,12 +11,10 @@ require_relative '../../Extensions/ext_pr1_v4'
 #
 #Test{ (1) => 1, (0) => 0,(18) => 171,
 #      ("a") => Err, (-2) => Err}
-#def sum(n)
-#  check_pre(n.nat?)
-#  ((n <= 0)? n:  n + sum(n-1))
-#end
-
-#p sum(18)
+def sum(n)
+  check_pre(n.nat?)
+  ((n <= 0)? n:  n + sum(n-1))
+end
 
 #Calculate the power n above a natural number x
 #
@@ -25,14 +23,12 @@ require_relative '../../Extensions/ext_pr1_v4'
 #Test{ (5,0)=> 1, (5,1) => 1, (5,2) => 25,
 #      (-5,0) => Err,(0,-5) => Err, ("a",3) => Err, (3,"a") => Err}
 #
-#def pot(x,n)
-#  check_pre(x.nat? && n.nat?)
-#  if n == 0 then 1
-#  else n <= 0? x : x*pot(x,n-1)
-#  end
-#end
-
-#p pot(5,2)
+def pot(x,n)
+  check_pre(x.nat? && n.nat?)
+  if n == 0 then 1
+  else n <= 0? x : x*pot(x,n-1)
+  end
+end
 
 #Calculate the Fibunacci Number n
 #
@@ -48,78 +44,80 @@ end
 #p fibo(6)
 
 ##### Endrekursion #####
-#def sum_e(n)
-#  sum_(n,0)
-#end
-#
-#def sum_(n,sum)
-#  if n == 0 then sum
-#  else sum_(n-1,sum+n)
-#  end
-#end
-#
-##p sum_e(5)
-#
-def pot_e(x,n)
-  pot_(x,n,1)
+
+
+def sum_(n)
+  check_pre(n.int? && n >= 0)
+  sum_helper(0,n)
 end
 
-def pot_(x,n,pot)
-  if n == 0 then pot
-  elsif n== 1 then pot
-  else pot_(x,n-1,x*pot)
+def sum_helper(accu,n)
+  if n == 0 then accu
+  elsif n > 0   then sum_helper(accu+n,n-1)
+  else check_pre(false)
   end
 end
 
-#p pot_e(2,4)
 #
-#
-#def fibo(n)
-#  fibo_(n,1,0)
-#end
-#
-#def fibo_(n,accu,acu)
-#  if n == 0 then acu
-#  elsif n == 1 then accu
-#  else
-#  end
-#end
+def pot_ (x, n)
+  check_pre(n.int? && n >= 0 && x.int?)
+  pot_helper(x,n,1)
+end
+
+def pot_helper(x, n, akku)
+  if    n == 0  then akku
+  elsif n > 0   then pot_helper(x, n-1,akku * x)
+  else check_pre(false)
+  end
+end
+
+
+def fibo_ n
+  fibo_helper n, 0, 0
+end
+
+def fibo_helper n, akku1, akku2
+  if    n == 0  then akku1 + akku2
+  elsif n == 1  then akku1 + akku2 + 1
+  elsif n > 1   then fibo_helper()
+  else check_pre(false)
+  end
+end
+
 ##### Iteration mit While #####
 
-#def sum_w(n)
-#  int sum
-#  while n > 0
-#    sum = sum + n
-#    n - 1
-#  end
-#  sum
-#end
-#
-def pot_w(x,n)
-  pot = 1
-  while n <= 0
-    pot = pot+x*x
-    n=n-1
+def sum_it(n)
+  check_pre(n.int? && n >= 0)
+  akku = 0
+  while n > 0
+    akku = akku + n
+    n = n - 1
   end
-  pot
+  akku
 end
-#
-#def fibo_w(n)
-#
-#end
-p pot_w(1,2)
+
+def pot_it(x, n)
+  check_pre(n.int? && n >= 0 && x.int?)
+  akku = 1
+  while n > 1
+    akku = akku * x
+    n = n - 1
+  end
+  akku
+end
+
+
 ##### Iteration mit reduce #####
 
-def sum_r(n)
-  (0..n).reduce(:+)
+def sum_red n
+  check_pre(n.int? && n >= 0)
+  (1..n).reduce(){|a,b| a + b}
 end
 
-def pot_r(x,n)
-  (n <= 0)? 1:(n == 1)? x:(1..n).reduce{x*x}
+def pot_red x, n
+  check_pre(n.int? && n >= 0 && x.int?)
+  (1..n).reduce() {|a,b| x * x}
 end
 
-#p pot_r(5,1)
 
-def fibo_r(n)
   
-end

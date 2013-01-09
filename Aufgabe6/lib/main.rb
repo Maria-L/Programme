@@ -197,6 +197,8 @@ class List
     end
   end
   
+  p List[1,2,3].reverse_endrec
+  
   #Merges two lists
   #
   #+ ::= (self,list) :: List x List => List
