@@ -43,10 +43,18 @@ module Enumerable
   end
  
   
-  #?!?
-  
+  #Returns the Maximum calculated with the Spaceship-Operator if no Block is 
+  #given and uses the Block to compare if one is given
+  #
+  #max_ ::= (self) :: Enumerable => Comparable
+  #
+  #Test {(Array["Hund","Katze","blaaaaaaa"]) => "Hund", 
+  #Array["Hund","Katze","blaaaaaaa"] {|a,b| a.length <=> b.length} => "blaaaaaaa"}
+  #
   def max_
-    
+    if block_given? then self.reduce {|akku,elem| if yield(akku,elem) >= 0 then akku else elem end}
+    else self.max_ {|a,b| b <=> a}
+    end
   end
   
   

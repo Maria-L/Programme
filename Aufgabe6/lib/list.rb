@@ -4,6 +4,14 @@ $LOAD_PATH.unshift File.join(File.dirname(__FILE__),'../..','Extensions')
 require_relative '../Extensions/ext_pr1_v4'
 
 class List
+  
+  def == aList
+    if    self.empty? && aList.empty?       then true
+    elsif self.first == aList.first         then self.rest == aList.rest
+    else false
+    end
+  end
+  
   #Determines the inverse of a List
   #
   #reverse_endrec ::= (self) :: List => List
@@ -30,8 +38,8 @@ class List
   #(List[1,2],List[3,4]) => List[1,2,3,4], (List[],List[]) => List[],
   #(List[1,2],'a') => Err
   #
-  def +(n)
-    if self.rest.empty? then n.prepend(self.first)
+  def + (n)
+    if self.empty? then n
     else ((self.rest)+n).prepend(self.first)
     end
   end

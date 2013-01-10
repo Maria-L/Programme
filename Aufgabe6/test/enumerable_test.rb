@@ -55,5 +55,10 @@ class EnumerableTest < Test::Unit::TestCase
     
     assert_equal(Hash[1 => 1,2 => 2,3 => 1],Array[1,2,2,3].freq_count_)
     assert_equal(Hash[],List[].freq_count_)
+    
+    
+    ##### max_ #####
+    assert_equal("Hund",Array["Hund","Katze","blaaaaaaa"].max_)
+    assert_equal("blaaaaaaa",Array["Hund","Katze","blaaaaaaa"].max_ {|a,b| a.length <=> b.length})
   end
 end

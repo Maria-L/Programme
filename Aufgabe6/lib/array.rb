@@ -85,7 +85,6 @@ class Array
   #Test {Array[].even_only => Array[], Array.even_only[1,2,3,4] => Array[2,4]
   #Array['a','b'] => Err}
   #
-  
   def even_only
     check_pre(self.all? {|a| a.int?})
     if    self == []      then []
@@ -115,7 +114,6 @@ class Array
   #
   #Test{ Array[] => 0,ArrayArray[Array[Array[],3,4],Array[1,2,3,4]] => 6}
   #
-
   def no_of_leaves_
     if    self == []      then 0
     elsif self[0].array?  then self[0].no_of_leaves_ + self.drop(1).no_of_leaves_
@@ -124,7 +122,6 @@ class Array
   end
 
   
-  
   #Maps a function over an Array of Arrays with two elements
   #
   #pairs_do ::= (self) :: Array => Array :::: self.all? {|a| a.length == 2}
@@ -132,7 +129,6 @@ class Array
   #Test {Array[[1,2],[3,4]] {|a,b| a + b} => Array[3,7], Array[] {|a,b| a + b} => Array[]
   #Array[[1,2],[3,4]] => Err}
   #
-  
   def pairs_do_ &block
     check_pre(self.all? {|a| a.length == 2} && block_given?)
     if self == [] then []
