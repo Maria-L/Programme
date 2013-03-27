@@ -61,15 +61,13 @@ public class Auto {
         //neue Geschwindigkeit berechnen
         //#######level erneuern######
         speed = speed + (acc * deltaTime);
-
-
     }
 
     public void print() {
         System.out.println("");
         System.out.println("##############");
-        System.out.println(time);
-        System.out.println(pos);
-        System.out.println(speed);
+        System.out.println("time : " + time);
+        System.out.println("pos  : " + pos);
+        System.out.println("speed: " + speed);
     }
 }

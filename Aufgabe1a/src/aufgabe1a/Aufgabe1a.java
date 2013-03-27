@@ -14,7 +14,7 @@ public class Aufgabe1a {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Auto auto = new Auto(1445.0, 456.0, 330.0);
+        Auto auto = new Auto(1445.0, 456000.0, 330.0);
 
         Integer i;
         Integer n;
@@ -22,10 +22,10 @@ public class Aufgabe1a {
         n = 100;
 
         auto.set(1.0,1.0,1.0,1.0);
-        while (true) {
+        while (auto.speed < n) {
 
             auto.print();
-            auto.step(1.0, 1.0);
+            auto.step(0.01, 1.0);
 
             i++;
         }
