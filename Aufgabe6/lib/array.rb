@@ -136,3 +136,5 @@ class Array
     end
   end
 end
+
+p [[1,2],[3,4]].pairs_do_ {|a,b| a + b}
